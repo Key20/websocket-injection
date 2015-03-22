@@ -1,7 +1,8 @@
+import websocket
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
-import websocket
+from tornado.options import define, options
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -15,6 +16,7 @@ class MainHandler(tornado.web.RequestHandler):
         if not url.startswith('ws://') and not url.startswith('wss://'):
             raise Exception('Invaild WebSocket Url, example: ws://127.0.0.1/chat')
 
+        print 'Request Payload: %s' % data
         ws = websocket.WebSocket()
         ws.connect(url)
         ws.send(data)
@@ -32,7 +34,9 @@ class Application(tornado.web.Application):
 
 
 if __name__ == '__main__':
+    define('port', default=8888, help='Port listened')
     http_server = tornado.httpserver.HTTPServer(Application())
-    http_server.listen(8889)
+    http_server.listen(options.port)
 
+    print 'WebSocket Injection Server Listenning on %d' % options.port
     tornado.ioloop.IOLoop.instance().start()
