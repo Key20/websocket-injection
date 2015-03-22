@@ -11,7 +11,7 @@ class MainHandler(tornado.web.RequestHandler):
         data = self.get_argument('data', default=None)
         if not url or not data:
             raise Exception('Usage: sqlmap.py -u "http://%s/?url=[target]&data=[sql'
-                       'i] -p data"' % self.request.host)
+                            'i]" -p data' % self.request.host)
             self.finish()
         if not url.startswith('ws://') and not url.startswith('wss://'):
             raise Exception('Invaild WebSocket Url, example: ws://127.0.0.1/chat')
@@ -35,6 +35,7 @@ class Application(tornado.web.Application):
 
 if __name__ == '__main__':
     define('port', default=8888, help='Port listened')
+    tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(options.port)
 
