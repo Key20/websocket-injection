@@ -1,3 +1,2 @@
-MySQLdb>=1.2.0
 tornado>=4.0.0
 websocket-client>=0.27.0
